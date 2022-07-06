@@ -1,0 +1,31 @@
+{
+  "title": "RYMV WA261 discrete first submission",
+  "maintainers": [
+    {"name": "Kelian Perez", "mail": "kelian.perez@etu.umontpellier.fr"}
+  ],
+  "colorings": [
+    {
+      "key": "location",
+      "title": "Location",
+      "type": "categorical"
+    },
+    {
+      "key": "strain",
+      "title": "Strain",
+      "type": "categorical"
+    }
+  ],
+  "geo_resolutions": [
+    "location"
+  ],
+  "panels": [
+     "tree",
+     "map"
+  ],
+  "display_defaults": {
+    "color_by" : "location"
+  },
+  "filters": [
+    "country"
+  ]
+}
