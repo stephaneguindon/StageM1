@@ -1,3 +1,5 @@
 augur import beast --mcc WA261_mcct --output-tree OUTPUT_TREE --output-node-data OUTPUT_NODE_DATA --tip-date-regex [0-9]{4}
 
 augur export v2 -t scripts/OUTPUT_TREE --node-data scripts/output_node_data_without_jitter.json scripts/branch_length.json --auspice-config config/auspice_config.json --metadata data/metadata_updated_country.tsv --lat-longs config/lat_longs.tsv --description scripts/description.md --output auspice/outputtest.json 
+
+
