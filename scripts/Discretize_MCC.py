@@ -26,9 +26,9 @@
         ##-pol or --polygon_label: polygon_label (default = location) => locationX_80%HPD_XX
 
     #Synopsis:
-        ##Discretize_MCC.py -h or --help # launch the help.
-        ##Discretize_MCC.py -i or --input <file> # Launch Discretize_MCC
-        ##Discretize_MCC.py -i or --input <file> -o or --output <name> # Launch Discretize_MCC to discretize your MCC BEAST nodes output and print the result in the file called <name>
+        ##SamReader.py -h or --help # launch the help.
+        ##SamReader.py -i or --input <file> # Launch Discretize_MCC
+        ##SamReader.py -i or --input <file> -o or --output <name> # Launch Discretize_MCC to discretize your MCC BEAST nodes output and print the result in the file called <name>
   
 
 ############### IMPORT MODULES ###############
@@ -38,7 +38,7 @@ from copy import deepcopy
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 
-def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node that contains related dictionaries with latitude and longitudes estimated for each leaves | params(nodes_output)
+def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output)
     with open(treejson, 'r') as file:
         dict = json.load(file) #open the json node_output from augur import beast as a dictionary and turn it into dictionary
         dict_node={}
@@ -49,14 +49,14 @@ def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node t
                 for e in dict["nodes"][n]:
                     if pol_lab+"1" in e:
                         dict_locations[e]={}
-                        for location in dict_locations: #link latitude to each leaf
+                        for location in dict_locations: #link latitude to each node
                             dict_locations_l={}
                             if location==e:
                                 dict_locations_l[location]= dict["nodes"][n][location]
                                 dict_node[n].update(dict_locations_l)
                     elif pol_lab+"2" in e:
                         dict_locations[e]={}
-                        for location in dict_locations: #link longitude to each leaf
+                        for location in dict_locations: #link longitude to each node
                             dict_locations_l={}
                             if location==e:
                                 dict_locations_l[location]= dict["nodes"][n][location]
@@ -66,7 +66,10 @@ def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node t
                         #raise ValueError("Your polygon's labels are not matching the default : location -> locationX_80%HPD_XX","\n","Please enter the polygon label using the option : -pol LABEL","\n")
         return(dict_node)
 
-def get_points_leaves(dict, pol_lab): #return a dictionnary with each leaves and its relatives coordinates ('lat;long') 
+###TO DO
+     ## we can reunite get_points methods and get_dict together
+
+def get_points_leaves(dict, pol_lab): #return a dictionnary with each nodes and its relatives coordinates ('lat;long') 
     dict_points=deepcopy(dict)
     for node in dict:
         dict_points[node]={}
@@ -104,7 +107,7 @@ def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that 
                             dict_node[n].update(dict_HPD_n)
     return dict_node
 
-def get_points_HPD(dict, pol_lab): #return a dictionnary with each nodes and its relatives coordinates ('lat;long') 
+def get_points_HPD(dict, pol_lab):
     dict_points=deepcopy(dict)
     for node in dict:
         coords=[]
@@ -125,6 +128,7 @@ def concatenate_dicts(dict1,dict2): #to concatenate positions in nodes and in le
     dict=dict2.update(dict1)
     return(dict2)
 
+### translate_coord can be upgraded while using a geogjson entered by the user // add arguments, parsing and possibility to swap lat/long(default) or long/lat
 def translate_coord_to_countries(dict):
     dict_country=deepcopy(dict)
 # Initialize Nominatim API
@@ -161,6 +165,7 @@ def translate_coord_to_countries(dict):
     with open ('translated_country.txt', 'w') as file:
         file.write(str(dict_country))
 
+###upgrade get_weight while defining weight using polygons area that are over each country or defined polygons (using geojson)
 def get_weight(pol_lab): #get weight per country (weight = iteration of a country / total number number of vertex)
     with open('translated_country.txt','r') as file:
         contents=file.read() 
@@ -305,8 +310,15 @@ def main(argv):
         pol_lab=str(pol_lab).replace("'","")
 
     t=str(dico_files["file_in"])
+#    get_dict_leaves("toparse.json", "location")
+#    get_points_leaves(get_dict_leaves('toparse.json',"location"),"location")
+#    get_points_HPD(get_dict_HPD('toparse.json',"location"),"location")
+#    concatenate_dicts(get_points_HPD(get_dict_HPD('toparse.json',"location"),"location"),get_points_leaves(get_dict_leaves('toparse.json',"location"),"location"))
     translate_coord_to_countries(concatenate_dicts(get_points_HPD(get_dict_HPD(t,pol_lab),pol_lab),get_points_leaves(get_dict_leaves(t,pol_lab),pol_lab)))
     get_weight(pol_lab)
+#    get_dict_HPD('toparse.json',"location")
+#    get_weight(translate_coord_to_countries(get_points_HPD(get_dict_HPD('toparse.json',pol_lab),"location")),"location")
+#    del_not_wanted("toparse.json","location")
     add_length_attribute(del_not_wanted(t,pol_lab),pol_lab)
     add_location_attribute(del_not_wanted(t,pol_lab),pol_lab)
 
