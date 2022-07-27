@@ -38,7 +38,7 @@ from copy import deepcopy
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 
-def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output)
+def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of leaves and its lat/long | params(nodes_output, polygon_label)
     with open(treejson, 'r') as file:
         dict = json.load(file) #open the json node_output from augur import beast as a dictionary and turn it into dictionary
         dict_node={}
@@ -62,14 +62,14 @@ def get_dict_leaves(treejson, pol_lab): #return dict_node a dictionary of node t
                                 dict_locations_l[location]= dict["nodes"][n][location]
                                 dict_node[n].update(dict_locations_l)
 
-                    ### if pol_lab not in e: #Throw exception error if location is not the polygons label
-                        #raise ValueError("Your polygon's labels are not matching the default : location -> locationX_80%HPD_XX","\n","Please enter the polygon label using the option : -pol LABEL","\n")
+                    if pol_lab not in e: #Throw exception error if location is not the polygons label
+                        raise ValueError("Your polygon's labels are not matching the default : location -> locationX_80%HPD_XX","\n","Please enter the polygon label using the option : -pol LABEL","\n")
         return(dict_node)
 
 ###TO DO
      ## we can reunite get_points methods and get_dict together
 
-def get_points_leaves(dict, pol_lab): #return a dictionnary with each nodes and its relatives coordinates ('lat;long') 
+def get_points_leaves(dict, pol_lab): #return a dictionnary with each nodes and its relatives coordinates ('lat;long') | params(nodes_output, polygon_label)
     dict_points=deepcopy(dict)
     for node in dict:
         dict_points[node]={}
@@ -77,12 +77,12 @@ def get_points_leaves(dict, pol_lab): #return a dictionnary with each nodes and 
         for hpds in dict[node]: #for each positions lat or long
             if pol_lab+'1' in hpds: #if list of latitudes
                 hpd=hpds
-                hpd2=hpd.replace(pol_lab+'1',pol_lab+'2') # the following lines are here to keep the structure of the previous dict
+                hpd2=hpd.replace(pol_lab+'1',pol_lab+'2') # hpd2 now refers to the corresponding longitude hpd
                 coords=(str(dict[node][hpd])+';'+str(dict[node][hpd2]))
                 dict_points[node]=coords #for each leaf, we get coordinates ('lat;long')
     return(dict_points)
 
-def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output)
+def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output, polygon_label)
     with open(treejson, 'r') as file:
         dict = json.load(file) #open the json node_output from augur import beast as a dictionary and turn it into dictionary
     dict_HPD={} 
@@ -98,7 +98,7 @@ def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that 
                         if hpd==e: #if hpd exists, then create a dict of node hpds
                             dict_HPD_n[hpd]=dict["nodes"][n][hpd]                         
                             dict_node[n].update(dict_HPD_n) #insert hpd dict in node dict
-                elif "location2_80%HPD_" in e: #if node attribute is a list of longitudes
+                elif "location2_80%HPD_" in e: #if node attribute is a list of longitudes do the same as for latitudes
                     dict_HPD[e]={}
                     for hpd in dict_HPD:
                         dict_HPD_n={}
@@ -107,7 +107,7 @@ def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that 
                             dict_node[n].update(dict_HPD_n)
     return dict_node
 
-def get_points_HPD(dict, pol_lab):
+def get_points_HPD(dict, pol_lab): #return a dictionnary with each internal nodes and its polygon vertex ('lat;long') | params(nodes_output, polygon_label)
     dict_points=deepcopy(dict)
     for node in dict:
         coords=[]
@@ -124,18 +124,18 @@ def get_points_HPD(dict, pol_lab):
                         dict_points[node]=coords
     return(dict_points)
 
-def concatenate_dicts(dict1,dict2): #to concatenate positions in nodes and in leaves
+def concatenate_dicts(dict1,dict2): #to concatenate positions in nodes and in leaves dict (leaf_dict, internal_nodes_dict)
     dict=dict2.update(dict1)
     return(dict2)
 
 ### translate_coord can be upgraded while using a geogjson entered by the user // add arguments, parsing and possibility to swap lat/long(default) or long/lat
-def translate_coord_to_countries(dict):
+def translate_coord_to_countries(dict): #reverse geocoding method that replace addresses with the corresponding countries | params(concatenated_dict)
     dict_country=deepcopy(dict)
 # Initialize Nominatim API
     geolocator = Nominatim(user_agent="MyScript")
 
     for node in dict:
-        if "NODE" in node:
+        if "NODE" in node: #for each internal nodes
             dict_country[node]=[]
             for coordinates in dict[node]:
                 location = geolocator.reverse(coordinates, language='en', timeout=10) #get all address from coordinates
@@ -149,7 +149,7 @@ def translate_coord_to_countries(dict):
                     dict_country[node].append(country)
                 else:    
                     dict_country[node].append(country)
-        else:         
+        else: #for each leaf
             coord=dict[node]
             location = geolocator.reverse(coord, language='en', timeout=10) #get all address from coordinates
             address = location.raw['address']  #to get address
@@ -166,7 +166,7 @@ def translate_coord_to_countries(dict):
         file.write(str(dict_country))
 
 ###upgrade get_weight while defining weight using polygons area that are over each country or defined polygons (using geojson)
-def get_weight(pol_lab): #get weight per country (weight = iteration of a country / total number number of vertex)
+def get_weight(pol_lab): #get weight per country (weight = iteration of a country / total number number of vertex) | params(polygon_label)
     with open('translated_country.txt','r') as file:
         contents=file.read() 
         dict= ast.literal_eval(contents) #str to dict
@@ -190,7 +190,7 @@ def get_weight(pol_lab): #get weight per country (weight = iteration of a countr
             weights[node][country]=1      
     return(weights)
 
-def del_not_wanted(treejson, pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output)
+def del_not_wanted(treejson, pol_lab): #return dict_node a dictionary of node that contains related dictionaries with positions of polygons vertex | params(nodes_output, polygon_label)
     with open(treejson, 'r') as file:
         dict = json.load(file) #open the json node_output from augur import beast as a dictionary and turn it into dictionary
         dict2 = deepcopy(dict)
@@ -201,7 +201,7 @@ def del_not_wanted(treejson, pol_lab): #return dict_node a dictionary of node th
                 del dict2["nodes"][n][e]
     return(dict2)
 
-def add_length_attribute(dict, pol_lab):
+def add_length_attribute(dict, pol_lab): #add length attributes to the nodes_output
     dict_loc = get_weight(pol_lab)
     dict2 = deepcopy(dict)
     
@@ -209,7 +209,7 @@ def add_length_attribute(dict, pol_lab):
         for node_l in dict_loc:
             if node == node_l:
                 for e in dict["nodes"][node]:
-                    if 'rate' in e:
+                    if 'rate' in e: #branch_length is calculated with the product : clock_length * rate
                         dict2["nodes"][node]["branch_length"]=(dict["nodes"][node]["clock_length"]*dict["nodes"][node]["rate"])
                         dict2["nodes"][node]["mutation_length"]=(dict["nodes"][node]["clock_length"]*dict["nodes"][node]["rate"])
                     else:
@@ -220,7 +220,7 @@ def add_length_attribute(dict, pol_lab):
         json_str = json.dumps(dict2, skipkeys = True, indent = 6)
         file.write(json_str)
 
-def add_location_attribute(dict, pol_lab):
+def add_location_attribute(dict, pol_lab): #add location attributes to the nodes_output
     dict_loc = get_weight(pol_lab)
     dict2 = deepcopy(dict)
     
@@ -237,11 +237,11 @@ def add_location_attribute(dict, pol_lab):
                     else:
                         weights.append(dict2["nodes"][node]["location_confidence"][countries])
                         if (dict2["nodes"][node]["location_confidence"][countries]) > max:
-                            location = countries
+                            location = countries #location is attributed to the country with the maximum location weight, if 2 or more weights equals the maximum, then the first country to appear will be selected
                     dict2["nodes"][node]["location"]=location
                 entropy = 0
                 for n in weights:
-                    entropy += numpy.absolute(n * numpy.log(n))
+                    entropy += numpy.absolute(n * numpy.log(n)) #entropy is the sum of each probability (for the node) multiplicated by the log of this probability
                 dict2["nodes"][node]["location_entropy"]=entropy
 
     with open("output_node_data.json", 'w') as file:
