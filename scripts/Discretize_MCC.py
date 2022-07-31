@@ -91,14 +91,14 @@ def get_dict_HPD(treejson,pol_lab): #return dict_node a dictionary of node that 
         if "NODE" in n: #to apply the following lines to intern nodes only
             dict_node[n]={} #initialise dict_node with nodes labels as key
             for e in dict["nodes"][n]:  #for each attributes of intern nodes : NODE_XXXXXXX
-                if "location1_80%HPD_" in e: #if node attribute is a list of latitudes
+                if pol_lab+"1_80%HPD_" in e: #if node attribute is a list of latitudes
                     dict_HPD[e]={}  #initialize dict_HPD keys with each name of the lists of latitudes : location1_80%HPD_XX
                     for hpd in dict_HPD:#for each existing hpd location1_80%HPD_XX
                         dict_HPD_n={}
                         if hpd==e: #if hpd exists, then create a dict of node hpds
                             dict_HPD_n[hpd]=dict["nodes"][n][hpd]                         
                             dict_node[n].update(dict_HPD_n) #insert hpd dict in node dict
-                elif "location2_80%HPD_" in e: #if node attribute is a list of longitudes do the same as for latitudes
+                elif pol_lab+"2_80%HPD_" in e: #if node attribute is a list of longitudes do the same as for latitudes
                     dict_HPD[e]={}
                     for hpd in dict_HPD:
                         dict_HPD_n={}
