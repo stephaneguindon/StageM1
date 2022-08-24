@@ -52,9 +52,8 @@ each country for then obtained by dividing this count by the total number of ver
 defining the polygon(s) characterizing the ancestral node of interest.
 
 ##### References
-```
-Ayres, D. et al. (2012) ‘BEAGLE: An Application Programming Interface and High-performance Computing Library for Statistical Phylogenetics’, Systematic Biology, 61: 170–3.
-```
+
+>Ayres, D. et al. (2012) ‘BEAGLE: An Application Programming Interface and High-performance Computing Library for Statistical Phylogenetics’, Systematic Biology, 61: 170–3.
 ```
 Drummond, A. et al. (2006) ‘Relaxed Phylogenetics and Dating with Confidence’, PLoS Biology, 4: e88
 ```
