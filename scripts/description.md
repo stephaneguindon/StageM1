@@ -54,12 +54,9 @@ defining the polygon(s) characterizing the ancestral node of interest.
 ##### References
 
 >Ayres, D. et al. (2012) ‘BEAGLE: An Application Programming Interface and High-performance Computing Library for Statistical Phylogenetics’, Systematic Biology, 61: 170–3.
-```
-Drummond, A. et al. (2006) ‘Relaxed Phylogenetics and Dating with Confidence’, PLoS Biology, 4: e88
-```
-```
-Fernandez, C., and Steel, M. (2000) ‘Bayesian Regression Analysis with Scale Mixtures of Normals’, Econometric Theory, 16: 80–101.
-```
-```
-Gill, M. et al. (2013) ‘Improving Bayesian Population Dynamics Inference: A Coalescent-based Model for Multiple Loci’, Molecular Biology and Evolution, 30: 713–24.
-```
+
+>Drummond, A. et al. (2006) ‘Relaxed Phylogenetics and Dating with Confidence’, PLoS Biology, 4: e88
+
+>Fernandez, C., and Steel, M. (2000) ‘Bayesian Regression Analysis with Scale Mixtures of Normals’, Econometric Theory, 16: 80–101.
+
+>Gill, M. et al. (2013) ‘Improving Bayesian Population Dynamics Inference: A Coalescent-based Model for Multiple Loci’, Molecular Biology and Evolution, 30: 713–24.
