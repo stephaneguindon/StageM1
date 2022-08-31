@@ -2,7 +2,7 @@
       "comment": "Imported from a BEAST MCC tree using `augur import beast`",
       "generated_by": {
             "program": "augur",
-            "version": "15.0.0"
+            "version": "17.0.0"
       },
       "mcc_file": "./data/WA261_mcct",
       "nodes": {

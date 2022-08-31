@@ -54,20 +54,30 @@ each country for then obtained by dividing this count by the total number of ver
 defining the polygon(s) characterizing the ancestral node of interest.
 
 ##### References
+```
+Ayres, D. et al. (2012) ‘BEAGLE: An Application Programming Interface and High-performance Computing Library for Statistical Phylogenetics’, Systematic Biology, 61: 170–3.
+```
+```
+Drummond, A. et al. (2006) ‘Relaxed Phylogenetics and Dating with Confidence’, PLoS Biology, 4: e88
+```
+```
+Fernandez, C., and Steel, M. (2000) ‘Bayesian Regression Analysis with Scale Mixtures of Normals’, Econometric Theory, 16: 80–101.
+```
+```
+Gill, M. et al. (2013) ‘Improving Bayesian Population Dynamics Inference: A Coalescent-based Model for Multiple Loci’, Molecular Biology and Evolution, 30: 713–24.
+```
+```
+Lemey, P. et al. (2010) ‘Phylogeography Takes a Relaxed Random Walk in Continuous Space and Time’, Molecular Biology and Evolution, 27: 1877–85.
+```
+```
+Rambaut, A. et al. (2018) ‘Posterior Summarisation in Bayesian Phylogenetics Using Tracer 1.7’, Systematic Biology, 67: syy032.
+```
+```
+Suchard, M., and Rambaut, A. (2009) ‘Many-core Algorithms for Statistical Phylogenetics’, Bioinformatics, 25: 1370–6.
+```
+```
+Suchard, M. et al. (2018) ‘Bayesian Phylogenetic and Phylodynamic Data Integration Using BEAST 1.10’, Virus Evolution, 4: vey016.
+```
 
->Ayres, D. et al. (2012) ‘BEAGLE: An Application Programming Interface and High-performance Computing Library for Statistical Phylogenetics’, Systematic Biology, 61: 170–3.
-
->Drummond, A. et al. (2006) ‘Relaxed Phylogenetics and Dating with Confidence’, PLoS Biology, 4: e88
-
->Fernandez, C., and Steel, M. (2000) ‘Bayesian Regression Analysis with Scale Mixtures of Normals’, Econometric Theory, 16: 80–101.
-
->Gill, M. et al. (2013) ‘Improving Bayesian Population Dynamics Inference: A Coalescent-based Model for Multiple Loci’, Molecular Biology and Evolution, 30: 713–24.
-
->Lemey, P. et al. (2010) ‘Phylogeography Takes a Relaxed Random Walk in Continuous Space and Time’, Molecular Biology and Evolution, 27: 1877–85.
-
->Rambaut, A. et al. (2018) ‘Posterior Summarisation in Bayesian Phylogenetics Using Tracer 1.7’, Systematic Biology, 67: syy032.
-
->Suchard, M., and Rambaut, A. (2009) ‘Many-core Algorithms for Statistical Phylogenetics’, Bioinformatics, 25: 1370–6.
-
->Suchard, M. et al. (2018) ‘Bayesian Phylogenetic and Phylodynamic Data Integration Using BEAST 1.10’, Virus Evolution, 4: vey016.
-
+##### Contributions
+This work is made possible by the sharing of data by Denis Fargette and my others internship supervisors Stéphane Guindon and Anne-Muriel Arigon.
