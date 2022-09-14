@@ -5,8 +5,12 @@
     "updated": "2022-09-14",
     "maintainers": [
       {
-        "name": "Kelian Perez, Stephane Guindon",
-        "mail": "kelian.perez@etu.umontpellier.fr"
+        "name": "Kelian Perez",
+        "url": "mailto:keperez.klp@gmail.com"
+      },
+      {
+        "name": "Stephane Guindon",
+        "url": "mailto:stephane.guindon@lirmm.fr"
       }
     ],
     "display_defaults": {
